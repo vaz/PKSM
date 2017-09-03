@@ -30,6 +30,7 @@
 #include <sys/socket.h>
 
 #include "bank.h"
+#include "camera.h"
 #include "config.h"
 #include "database.h"
 #include "dex.h"

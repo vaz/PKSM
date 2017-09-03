@@ -17,7 +17,7 @@ APP_AUTHOR          :=	Bernardo Giordano, PKSM devs
 TARGET              :=	$(subst $e ,_,$(notdir $(APP_TITLE)))
 OUTDIR              :=	output
 BUILD               :=	build
-SOURCES             :=	source/memecrypto/source source/pp2d/pp2d source
+SOURCES             :=	source/memecrypto/source source/quirc source/pp2d/pp2d source
 INCLUDES            :=	include
 ROMFS               :=	assets/romfs
 
@@ -176,9 +176,9 @@ MAKEROM		?=	makerom
 
 MAKEROM_ARGS		:=	-elf "$(OUTPUT).elf" -rsf "$(RSF_PATH)" -ver "$$(($(VERSION_MAJOR)*1024+$(VERSION_MINOR)*16+$(VERSION_MICRO)))" -banner "$(BUILD)/banner.bnr" -icon "$(BUILD)/icon.icn" -DAPP_TITLE="$(APP_TITLE)" -DAPP_PRODUCT_CODE="$(PRODUCT_CODE)" -DAPP_UNIQUE_ID="$(UNIQUE_ID)"
 
-ifneq ($(strip $(ROMFS)),)
-	MAKEROM_ARGS	+=	 -romfs "$(BUILD)/romfs.bin"
-endif
+#ifneq ($(strip $(ROMFS)),)
+#	MAKEROM_ARGS	+=	 -romfs "$(BUILD)/romfs.bin"
+#endif
 ifneq ($(strip $(LOGO)),)
 	MAKEROM_ARGS	+=	 -logo "$(LOGO)"
 endif
@@ -187,7 +187,7 @@ ifeq ($(strip $(ROMFS)),)
 $(OUTPUT).cia: $(OUTPUT).elf $(BUILD)/banner.bnr $(BUILD)/icon.icn
 	$(MAKEROM) -f cia -o "$@" -target t -exefslogo $(MAKEROM_ARGS)
 else
-$(OUTPUT).cia: $(OUTPUT).elf $(BUILD)/romfs.bin $(BUILD)/banner.bnr $(BUILD)/icon.icn
+$(OUTPUT).cia: $(OUTPUT).elf $(BUILD)/banner.bnr $(BUILD)/icon.icn
 	$(MAKEROM) -f cia -o "$@" -target t -exefslogo $(MAKEROM_ARGS)
 endif
 
@@ -211,12 +211,6 @@ $(BUILD)/banner.bnr	:	$(BANNER_IMAGE) $(BANNER_AUDIO)
 
 $(BUILD)/icon.icn	:	$(APP_ICON)
 	$(BANNERTOOL) makesmdh -s "$(APP_TITLE)" -l "$(APP_DESCRIPTION)" -p "$(APP_AUTHOR)" -i "$(APP_ICON)" -f "$(ICON_FLAGS)" -o "$@"
-
-
-3DSTOOL		?= 3dstool
-
-$(BUILD)/romfs.bin	:	$(ROMFS)
-	$(3DSTOOL) -ctf romfs "$@" --romfs-dir "$(ROMFS)"
 
 #---------------------------------------------------------------------------------
 else

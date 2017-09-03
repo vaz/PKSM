@@ -1171,7 +1171,17 @@ void pokemonEditor(u8* mainbuf) {
 				
 				while (aptMainLoop() && !(hidKeysDown() & KEY_B)) {
 					hidScanInput();
+					touchPosition touch;
+					hidTouchRead(&touch);
 					calcCurrentEntryMorePages(&genEntry, &page, maxpages, 39, 8);
+					
+					if (hidKeysDown() & KEY_TOUCH && touch.px > 110 && touch.px < 210 && touch.py > 0 && touch.py < 110) {
+						if (!camera_get_mode()) {
+							camera_init();
+						} else {
+							camera_exit();
+						}
+					}
 					
 					if (hidKeysDown() & KEY_A) {
 						if (!(game_isgen6() && ((genEntry + 1) > 721)) && (page*40 + genEntry < 802)) {

@@ -1174,17 +1174,21 @@ void printPKViewer(u8* mainbuf, u8* tmp, bool isTeam, int currentEntry, int menu
 	
 	pp2d_begin_draw(GFX_TOP);
 		if (mode == ED_GENERATE) {
-			char temp[4];
-			pp2d_draw_texture(TEXTURE_GENERATION_BG, 0, 0);
-			for (int i = 0; i < 5; i++) {
-				for (int j = 0; j < 8; j++) {
-					if (additional1 == i * 8 + j)
-						printSelector(j*49 + j, i*47 + i, 49, 47);
-					
-					if ((i*8+j + 40*additional2) < 802) {
-						pp2d_draw_texture_part(TEXTURE_NORMAL_SPRITESHEET, 7 + 49 * j + j, 2 + 47 * i + i, 40 * ((40 * additional2 + i * 8 + j + 1) % 25) + 4, 30 * ((40 * additional2 + i * 8 + j + 1) / 25), 34, 30);
-						snprintf(temp, 4, "%d", 40 * additional2 + i * 8 + j + 1);
-						pp2d_draw_text(49 * j + (49 - pp2d_get_text_width(temp, FONT_SIZE_9, FONT_SIZE_9)) / 2 + j, 34 + i * 47 + i, FONT_SIZE_9, FONT_SIZE_9, WHITE, temp);
+			if (camera_get_mode()) {
+				camera_draw_qr();
+			} else {
+				char temp[4];
+				pp2d_draw_texture(TEXTURE_GENERATION_BG, 0, 0);
+				for (int i = 0; i < 5; i++) {
+					for (int j = 0; j < 8; j++) {
+						if (additional1 == i * 8 + j)
+							printSelector(j*49 + j, i*47 + i, 49, 47);
+						
+						if ((i*8+j + 40*additional2) < 802) {
+							pp2d_draw_texture_part(TEXTURE_NORMAL_SPRITESHEET, 7 + 49 * j + j, 2 + 47 * i + i, 40 * ((40 * additional2 + i * 8 + j + 1) % 25) + 4, 30 * ((40 * additional2 + i * 8 + j + 1) / 25), 34, 30);
+							snprintf(temp, 4, "%d", 40 * additional2 + i * 8 + j + 1);
+							pp2d_draw_text(49 * j + (49 - pp2d_get_text_width(temp, FONT_SIZE_9, FONT_SIZE_9)) / 2 + j, 34 + i * 47 + i, FONT_SIZE_9, FONT_SIZE_9, WHITE, temp);
+						}
 					}
 				}
 			}

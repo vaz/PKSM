@@ -20,6 +20,8 @@
 
 #define ASSETS 12
 
+int __stacksize__ = 64 * 1024;
+
 char* path[] = { 
 	"/3ds/data/PKSM/additionalassets/alternative_icons_spritesheetv3.png",
 	"/3ds/data/PKSM/additionalassets/balls_spritesheetv2.png",
